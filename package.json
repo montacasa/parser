@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "main": "./lib/parser.min.js",
+  "repository": "git@github.com:montacasa/parser.git",
   "scripts": {
     "build": "WEBPACK_ENV=build webpack",
     "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
