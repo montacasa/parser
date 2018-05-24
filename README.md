@@ -1,4 +1,4 @@
-# crawler-xml-filters
+# Parser
 
 [![Build Status](https://travis-ci.org/montacasa/parser.svg?branch=dev)](https://travis-ci.org/montacasa/parser)
 

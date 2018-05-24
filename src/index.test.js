@@ -13,3 +13,7 @@ test('should parse a float', () => {
 test('should slugify', () => {
   expect(Parser.slugify('A String')).toBe('astring');
 });
+
+test('should slugify with override rule', () => {
+  expect(Parser.slugify('A String', {lower: true, remove: null, replacement: '-'})).toBe('a-string');
+});
