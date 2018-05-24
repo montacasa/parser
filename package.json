@@ -1,8 +1,9 @@
 {
   "name": "@montacasa/parser",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "./lib/parser.min.js",
+  "repository": "git@github.com:montacasa/parser.git",
   "scripts": {
     "build": "WEBPACK_ENV=build webpack",
     "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
