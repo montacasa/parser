@@ -1,6 +1,6 @@
 {
   "name": "@montacasa/parser",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "./lib/parser.min.js",
   "repository": "git@github.com:montacasa/parser.git",
