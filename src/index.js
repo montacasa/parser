@@ -237,16 +237,22 @@ class Parser {
   /**
    * Transliterate text
    * @param text {string} - text
+   * @param newRule {object} - object override rule
    * @returns {text} - Returns text transliterated
    */
-  static slugify(text) {
+  static slugify(text, newRule) {
     try {
       if (typeof text !== 'string') {
         throw new Error(
-          `Slugify can not be generated from ${text} param. It should be a string!`,
+          `Slugify can not be generated from ${text} param. It should be a string!`
         );
       }
-      return slugify(text, {lower: true, remove: /[^\w\-]+/g});
+      // Default rule:
+      const rule = {lower: true, remove: /[^\w\-]+/g};
+      if (newRule) {
+        Object.assign(rule, newRule);
+      }
+      return slugify(text, rule);
     } catch (error) {
       throw error;
     }
