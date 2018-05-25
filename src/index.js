@@ -261,13 +261,18 @@ class Parser {
   /**
    * Convert html to markdown
    * @param text {string} - text
+   * @param keepStrong {string} - rule to keep strong tags
    * @returns {text} - Returns text converted
    */
-  static toMarkdown(text) {
+  static toMarkdown(text, keepStrong = false) {
     try {
       if (typeof text === 'string') {
-        const turndown = new Turndown();
-        text = turndown.turndown(text).toLowerCase();
+        const turndownService = new TurndownService({headingStyle: 'atx'});
+        if (keepStrong) {
+          turndownService.keep(['strong', 'a']);
+          turndownService.remove(['h1', 'h2', 'h3', 'p'])
+        }
+        text = turndownService.turndown(text).toLowerCase();
         return `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
       }
       return text;
