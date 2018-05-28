@@ -1,6 +1,6 @@
 /* @flow */
 import slugify from 'slugify';
-import Turndown from 'turndown';
+import TurndownService from 'turndown';
 
 /**
  * App Support
@@ -13,7 +13,7 @@ import Turndown from 'turndown';
  * @classdesc Parser class
  */
 class Parser {
-  static parseFloat(str = '') {
+  static parseFloat(str: string = ''): number {
     if (!isNaN(parseFloat(str))) {
       return Number(str);
     }
@@ -26,22 +26,22 @@ class Parser {
 
     let last = str.substr(-1, 1);
 
-    if (last == '.' || last == ',') {
+    if (last === '.' || last === ',') {
       str += '0';
     }
 
     str = str.replace(/\D/g, '.');
-    str = str.split('.');
+    let arr = str.split('.');
 
-    if (str[str.length - 1] == '') {
-      str[str.length - 1] = '0';
+    if (arr[arr.length - 1] === '') {
+      arr[arr.length - 1] = '0';
     }
 
-    str = str.filter(value => value != '');
+    arr = arr.filter(value => value !== '');
 
-    let dec = str.length > 1 ? str.pop() : 0;
+    let dec = arr.length > 1 ? arr.pop() : 0;
 
-    str = str.join('') + '.' + dec;
+    str = arr.join('') + '.' + dec;
 
     if (!isNaN(Number(str))) {
       return Number(str);
@@ -50,7 +50,7 @@ class Parser {
     return 0;
   }
 
-  static isEmptyParam(param) {
+  static isEmptyParam(param: any): boolean {
     return (
       !param ||
       typeof param !== 'string' ||
@@ -59,7 +59,7 @@ class Parser {
     );
   }
 
-  static parseInt(param) {
+  static parseInt(param: any): any {
     try {
       let number = Number.parseInt(param, 10);
       return !isNaN(number) && typeof number === 'number' ? number : null;
@@ -69,7 +69,7 @@ class Parser {
     return null;
   }
 
-  static isNotEmpty(param) {
+  static isNotEmpty(param: any): any {
     return (
       param &&
       typeof param !== 'undefined' &&
@@ -78,11 +78,14 @@ class Parser {
     );
   }
 
+  static mapConverter(): any {
+    return new Map();
+  }
+
   /**
    * Set anonymous parser functions in map converter attribute
    */
   static loadParser() {
-    this.mapConverter = new Map();
     this.mapConverter.set('boolean', this.booleanParser());
     this.mapConverter.set('string', this.stringParser());
     this.mapConverter.set('number', this.numberParser());
@@ -96,7 +99,7 @@ class Parser {
    * @param value {string} - value that will be parsed and converted
    * @returns {*}
    */
-  static parse(type, value) {
+  static parse(type: string, value: string): any {
     try {
       if (typeof type !== 'string') {
         throw new Error('Type not accepted!');
@@ -117,7 +120,7 @@ class Parser {
    * Returns anonymous function to parse boolean param
    * @returns {function(*=)}
    */
-  static booleanParser() {
+  static booleanParser(): Function {
     return v => {
       if (v === null || typeof v === 'undefined') {
         return v;
@@ -149,7 +152,7 @@ class Parser {
    * Returns anonymous function to parse string param
    * @returns {function(*=)}
    */
-  static stringParser() {
+  static stringParser(): Function {
     return v => {
       if (v === null || typeof v === 'undefined') {
         return v;
@@ -171,7 +174,7 @@ class Parser {
    * Returns anonymous function to parse floats param
    * @returns {function(*=)}
    */
-  static floatParser() {
+  static floatParser(): Function {
     return v => {
       v = !v || typeof v === 'undefined' ? '0' : v;
       return this.parseFloat(v);
@@ -182,7 +185,7 @@ class Parser {
    * Returns anonymous function to number objects param
    * @returns {function(*=)}
    */
-  static numberParser() {
+  static numberParser(): Function {
     return v => {
       if (v === null || typeof v === 'undefined') {
         return v;
@@ -209,7 +212,7 @@ class Parser {
    * Returns anonymous function to parse objects param
    * @returns {function(*=)}
    */
-  static objectParser() {
+  static objectParser(): Function {
     return v => {
       try {
         if (v === null || typeof v === 'undefined') {
@@ -240,11 +243,11 @@ class Parser {
    * @param newRule {object} - object override rule
    * @returns {text} - Returns text transliterated
    */
-  static slugify(text, newRule) {
+  static slugify(text: string, newRule: Object): string {
     try {
       if (typeof text !== 'string') {
         throw new Error(
-          `Slugify can not be generated from ${text} param. It should be a string!`
+          `Slugify can not be generated from ${text} param. It should be a string!`,
         );
       }
       // Default rule:
@@ -264,13 +267,13 @@ class Parser {
    * @param keepStrong {string} - rule to keep strong tags
    * @returns {text} - Returns text converted
    */
-  static toMarkdown(text, keepStrong = false) {
+  static toMarkdown(text: string, keepStrong: boolean = false) {
     try {
       if (typeof text === 'string') {
         const turndownService = new TurndownService({headingStyle: 'atx'});
         if (keepStrong) {
           turndownService.keep(['strong', 'a']);
-          turndownService.remove(['h1', 'h2', 'h3', 'p'])
+          turndownService.remove(['h1', 'h2', 'h3', 'p']);
         }
         text = turndownService.turndown(text).toLowerCase();
         return `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
