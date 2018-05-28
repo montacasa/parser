@@ -2,6 +2,17 @@
 # yarn lockfile v1
 
 
+"@montacasa/cz-mc@^0.2.0-rc.2":
+  version "0.2.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@montacasa/cz-mc/-/cz-mc-0.2.0-rc.2.tgz#8f2651addf1b36b6ca26c6389b3b73ad07141372"
+  dependencies:
+    conventional-commit-types "^2.0.0"
+    lodash.map "^4.5.1"
+    longest "^1.0.1"
+    pad-right "^0.2.2"
+    right-pad "^1.0.1"
+    word-wrap "^1.0.3"
+
 abab@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.3.tgz#b81de5f7274ec4e756d797cd834f303642724e5d"
