@@ -240,11 +240,11 @@ class Parser {
    * @param newRule {object} - object override rule
    * @returns {text} - Returns text transliterated
    */
-  static slugify(text, newRule) {
+  static slugify(text, newRule, andOperator) {
     try {
       if (typeof text !== 'string') {
         throw new Error(
-          `Slugify can not be generated from ${text} param. It should be a string!`
+          `Slugify can not be generated from ${text} param. It should be a string!`,
         );
       }
       // Default rule:
@@ -252,7 +252,15 @@ class Parser {
       if (newRule) {
         Object.assign(rule, newRule);
       }
-      return slugify(text, rule);
+
+      const slugified = slugify(text, rule);
+
+      // Parse slugified to replace the andOperator
+      const parsed = andOperator
+        ? slugified.replace('-and-', `-${andOperator}-`)
+        : slugified;
+
+      return parsed;
     } catch (error) {
       throw error;
     }
@@ -267,10 +275,10 @@ class Parser {
   static toMarkdown(text, keepStrong = false) {
     try {
       if (typeof text === 'string') {
-        const turndownService = new TurndownService({headingStyle: 'atx'});
+        const turndownService = new Turndown({headingStyle: 'atx'});
         if (keepStrong) {
           turndownService.keep(['strong', 'a']);
-          turndownService.remove(['h1', 'h2', 'h3', 'p'])
+          turndownService.remove(['h1', 'h2', 'h3', 'p']);
         }
         text = turndownService.turndown(text).toLowerCase();
         return `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
