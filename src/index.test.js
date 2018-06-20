@@ -15,5 +15,17 @@ test('should slugify', () => {
 });
 
 test('should slugify with override rule', () => {
-  expect(Parser.slugify('A String', {lower: true, remove: null, replacement: '-'})).toBe('a-string');
+  expect(
+    Parser.slugify('A String', {lower: true, remove: null, replacement: '-'}),
+  ).toBe('a-string');
+});
+
+test('should slugify with override rule to change "and" to "e"', () => {
+  expect(
+    Parser.slugify(
+      'String & String',
+      {lower: true, remove: null, replacement: '-'},
+      'e',
+    ),
+  ).toBe('string-e-string');
 });
