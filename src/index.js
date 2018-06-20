@@ -275,10 +275,10 @@ class Parser {
   static toMarkdown(text, keepStrong = false) {
     try {
       if (typeof text === 'string') {
-        const turndownService = new TurndownService({headingStyle: 'atx'});
+        const turndownService = new Turndown({headingStyle: 'atx'});
         if (keepStrong) {
           turndownService.keep(['strong', 'a']);
-          turndownService.remove(['h1', 'h2', 'h3', 'p'])
+          turndownService.remove(['h1', 'h2', 'h3', 'p']);
         }
         text = turndownService.turndown(text).toLowerCase();
         return `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
