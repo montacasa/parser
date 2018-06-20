@@ -240,11 +240,11 @@ class Parser {
    * @param newRule {object} - object override rule
    * @returns {text} - Returns text transliterated
    */
-  static slugify(text, newRule) {
+  static slugify(text, newRule, andOperator) {
     try {
       if (typeof text !== 'string') {
         throw new Error(
-          `Slugify can not be generated from ${text} param. It should be a string!`
+          `Slugify can not be generated from ${text} param. It should be a string!`,
         );
       }
       // Default rule:
@@ -252,7 +252,15 @@ class Parser {
       if (newRule) {
         Object.assign(rule, newRule);
       }
-      return slugify(text, rule);
+
+      const slugified = slugify(text, rule);
+
+      // Parse slugified to replace the andOperator
+      const parsed = andOperator
+        ? slugified.replace('-and-', `-${andOperator}-`)
+        : slugified;
+
+      return parsed;
     } catch (error) {
       throw error;
     }
