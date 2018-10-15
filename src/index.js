@@ -288,6 +288,58 @@ class Parser {
       throw error;
     }
   }
+
+  /**
+   * Build array of category objects with each category name
+   * @param categories {object} - array of categories name
+   */
+  static buildCategoriesArray (categories) {
+    return categories.map(category => {
+      const splited = category.split('>').reverse();
+      const obj = splited.reduce((cats, item) => {
+        const cat = item.trim();
+
+        if (!cat) {
+          return null;
+        }
+
+        const rule = {lower: true, remove: null, replacement: '-'};
+
+        // Indent objects based on their existence
+        if (!cats.name) {
+          cats.name = cat;
+          cats.path = this.slugify(cat, rule);
+        } else if (!cats.parent || !cats.parent.name) {
+          cats.parent = {};
+          cats.parent.name = cat;
+          cats.parent.path = this.slugify(cat, rule);
+        } else if (!cats.parent.parent || !cats.parent.parent.name) {
+          cats.parent.parent = {};
+          cats.parent.parent.name = cat;
+          cats.parent.parent.path = this.slugify(cat, rule);
+        } else if (
+          !cats.parent.parent.parent ||
+          !cats.parent.parent.parent.name
+        ) {
+          cats.parent.parent.parent = {};
+          cats.parent.parent.parent.name = cat;
+          cats.parent.parent.parent.path = this.slugify(cat, rule);
+        } else if (
+          !cats.parent.parent.parent.parent ||
+          !cats.parent.parent.parent.parent.name
+        ) {
+          cats.parent.parent.parent.parent = {};
+          cats.parent.parent.parent.parent.name = cat;
+          cats.parent.parent.parent.parent.path = this.slugify(cat, rule);
+        } else {
+          throw new Error('Categories should go as far as 5 levels.');
+        }
+
+        return cats;
+      }, {});
+      return obj;
+    });
+  }
 }
 
 module.exports = Parser;
